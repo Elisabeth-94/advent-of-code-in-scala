@@ -1,49 +1,42 @@
-import scala.io.Source
-import scala.util.{Try, Success, Failure}
+import scala.annotation.tailrec
 
 object Day1_Trebuchet {
-
-  @main def trebuchet(): Unit =
-    println("This is the Trebuchet exercise")
-    // combine the first digit and the last digit of each line of text, to form a single two digit number
-    // then take the sum of all these numbers together
-
-    println(s"Current working directory: ${os.pwd}")
-
-// Scala docs way to read a file:
-    val root = os.pwd // gets the current working directory
-    val filePath: os.Path = root / "src" / "main" / "resources" / "trebuchet.txt"
-    val lineStream: geny.Generator[String] = os.read.lines.stream(filePath) // OS-Lib takes care of closing the file once the generator returned by stream is exhausted.
-    // now try to use this stream (similar to lazy list) to get the numbers per line
+  
+  // combine the first digit and the last digit of each line of text, to form a single two digit number, then take the sum of all these numbers together
+  def part1(filePath: os.Path): Int =
+    val lineStream: geny.Generator[String] = os.read.lines.stream(filePath)
     lineStream
-      .filter(line => line.nonEmpty && line.charAt(0).isDigit)
-      .map(line => line.charAt(0))
-      .foreach(d => println(d))
+      .map(firstDigitCombinedWithLastDigitInString)
+      .filter(_.isDefined) // filter out the None
+      .map(_.get) // take the values from the Options
+      .fold(0)(_ + _) // take the sum of all the values generated in the stream
+    
+  def part2(filePath: os.Path): Int =
+    // TODO
+    40 + 2
+      
+      
+  @tailrec
+  def firstDigitCombinedWithLastDigitInString(line: String): Option[Int] =
+    line.length match
+      case 0 => None
+      case _ =>
+        if (line.head.isDigit) combineWithlastDigitInString(line, line.head.toString)
+        else firstDigitCombinedWithLastDigitInString(line.tail)
 
-//// ChatGPTs way to read a file conform FP
-//    val filename = "/trebuchet.txt"
-//    val lines = readResourceFileLinesIntoList(filename)
-//
-//    lines match {
-//      case Some(linesList) =>
-//        linesList.foreach(println) // Process each line individually. Add a function that gets the numbers
-//      case None =>
-//        println(s"Resource $filename not found or could not be read.")
-//    }
-//
-//  // Function to read file content and return it as an Option[List[String]]
-//  def readResourceFileLinesIntoList(filename: String): Option[List[String]] =
-//    val resourceStream = Option(getClass.getResourceAsStream(filename))
-//    resourceStream.flatMap { // you use curly braces here instead of parentheses, because you have a multi-line expression
-//      stream =>
-//      Try(Source.fromInputStream(stream).getLines().toList) match {
-//        case Success(lines) =>
-//          // Ensure the source is closed after reading
-//          stream.close()
-//          Some(lines)
-//        case Failure(_) =>
-//          None
-//      }
-//    }
+  @tailrec
+  def combineWithlastDigitInString(line: String, firstDigit: String): Option[Int] =
+    line.length match
+      case 0 => None
+      case _ =>
+        if (line.last.isDigit) Some(firstDigit.concat(line.last.toString).toInt)
+        else combineWithlastDigitInString(line.dropRight(1), firstDigit)
 
+  /* Takeaways:
+  - create a Scala object instead of a class, so you don't have to make a new instance to call its methods.
+  - there are multiple ways to read text files. Since it's input, you cannot do that fully FP.
+  - You can use OS-Lib to read files. OS-Lib takes care of closing the file once the generator returned by stream is exhausted.
+  - You can apply head :: tail to Strings as well
+  - You can nest tail recursive functions (though it might not be very clean code)
+  */
 }
