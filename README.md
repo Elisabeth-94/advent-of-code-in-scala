@@ -5,9 +5,9 @@ This means this code is full of comments where I explain the code to myself.
 NB: A lot of comments are also just copy-pasted from the resources below:
 
 ## Resources
-- https://docs.scala-lang.org/tutorials/scala-for-java-programmers.html -> you're at the "Algebraic datatypes and pattern matching" chapter
-- https://tourofscala.com/ -> syntax for beginners. Small exercises with cute confirmations.
-- chatGPT
+- https://docs.scala-lang.org/tutorials/scala-for-java-programmers.html -> Nice introduction if you're familiar with Java (you're at the "Algebraic datatypes and pattern matching" chapter)
+- https://tourofscala.com/ -> syntax for beginners. Small exercises with cute confirmations. (you're at List Flatten)
+- https://scalacenter.github.io/scala-advent-of-code/2023/puzzles -> compare your work to these examples to see if you could have done it more efficient / shorter
 
 ## Steps to get started
 Use the Scala installer on https://docs.scala-lang.org/getting-started/index.html to get started.
