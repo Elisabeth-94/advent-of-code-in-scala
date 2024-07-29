@@ -7,7 +7,10 @@ package nl.elisabeth.adventofcodeinscala
   val root = os.pwd // gets the current working directory
   val filePathTrebuchet: os.Path = root / "src" / "main" / "resources" / "trebuchet.txt"
 
-  println("Day 1: Trebuchet?! Part1 - The first and last digit per line combined into a number, then the sum of all: " 
+  println("Day 1: Trebuchet?! Part1 - The first and last digit per line combined into a number, then the sum of all: "
     + Day1_Trebuchet.sumOfCombinedFirstAndLastDigitOfEachLine(filePathTrebuchet, Day1_Trebuchet.firstAndLastDigit))
-  println("Day 1, Trebuchet?! Part2 - Digits can also be written out like 'two'. Calculate the sum with this requirement: " 
+  println("Day 1, Trebuchet?! Part2 - Digits can also be written out like 'two'. Calculate the sum with this requirement: "
     + Day1_Trebuchet.sumOfCombinedFirstAndLastDigitOfEachLine(filePathTrebuchet, Day1_Trebuchet.firstAndLastDigitOrWrittenNumber))
+  println("Day 2, Code Conundrum. Part 1 - which games would have been possible if the bag contained only 12 red cubes, "
+  + "13 green cubes, and 14 blue cubes. This is the sum: ")
+  println("Day 2, Code Conundrum. Part 2 - : ")
