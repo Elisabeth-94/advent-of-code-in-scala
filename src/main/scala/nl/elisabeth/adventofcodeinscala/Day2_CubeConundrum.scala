@@ -15,18 +15,6 @@ object Day2_CubeConundrum {
       .map(getGameId)
       .foldLeft(0)(_ + _)
 
-  @tailrec
-  protected[adventofcodeinscala] def cubeNumbersWithinBounds(colourCountStrings: Array[String],
-                                                             realCubeCounts: Map[String, Int]): Boolean =
-    colourCountStrings.length match
-      case 1 => true
-      case _ =>
-        val firstValue = colourCountStrings(1).trim.split(" ")
-        if (firstValue(1) == "blue" && firstValue(0).toInt > realCubeCounts("blue")) return false
-        else if (firstValue(1) == "red" && firstValue(0).toInt > realCubeCounts("red")) return false
-        else if (firstValue(1) == "green" && firstValue(0).toInt > realCubeCounts("green")) return false
-        cubeNumbersWithinBounds(colourCountStrings.tail, realCubeCounts)
-
   protected[adventofcodeinscala] def alternativeCubeNumbersWithinBounds(colourCountStrings: Array[String],
                                                                         realCubeCounts: Map[String, Int]): Boolean =
     colourCountStrings.tail.forall { entry =>
@@ -40,18 +28,45 @@ object Day2_CubeConundrum {
   protected[adventofcodeinscala] def getGameId(line: Array[String]): Int =
     line(0).split(" ")(1).toInt
 
+
+
+
   // PART 2 - Per game (line) what is the fewest number of cubes of each color that could have been in the bag to make the game possible?
   // Take the power of these three numbers, and then the sum of all games
   protected[adventofcodeinscala] def sumProductOfMinimumCubesPerGame(filePath: os.Path): Int =
     val lineStream: geny.Generator[String] = os.read.lines.stream(filePath)
     lineStream
       .map(line => line.split(": |; |, "))
-      .map(productOfMinimumCubes)
+      .map(minimumCubesNeeded)
+      .map(dict => dict.values.product)
       .foldLeft(0)(_ + _)
 
-  protected[adventofcodeinscala] def productOfMinimumCubes(line: Array[String]): Int =
-    42
+  protected[adventofcodeinscala] def minimumCubesNeeded(line: Array[String]): Map[String, Int] =
+    val cubeCounter = Map("blue" -> 0, "green" -> 0, "red" -> 0)
+    minimumCubesNeededHelper(line, cubeCounter)
 
+  @tailrec
+  private def minimumCubesNeededHelper(line: Array[String], cubeCounter: Map[String, Int]): Map[String, Int] =
+    line.length match
+      case 1 => cubeCounter
+      case _ =>
+        val Array(countStr, colourKey) =  line(1).split(" ")
+        cubeCounter.get(colourKey) match
+          case Some(value) =>
+            if (value < countStr.toInt) minimumCubesNeededHelper(line.tail, cubeCounter.updated(colourKey, countStr.toInt))
+            else minimumCubesNeededHelper(line.tail, cubeCounter)
+          case None => minimumCubesNeededHelper(line.tail, cubeCounter)
+
+  protected[adventofcodeinscala] def alternativeMinimumCubesNeeded(line: Array[String]): Map[String, Int] =
+    line.drop(1).foldLeft(Map("blue" -> 0, "green" -> 0, "red" -> 0)) { 
+      (cubeCounter, entry) =>
+      val Array(countStr, colourKey) = entry.split(" ")
+      val count = countStr.toInt
+      cubeCounter.updatedWith(colourKey) {
+        case Some(value) if value < count => Some(count)
+        case other => other
+      }
+    }
 }
 
 /* Takeaways
@@ -59,4 +74,5 @@ object Day2_CubeConundrum {
 - Learning regex can be very helpful in dealing with text operations
 - .forAll checks all instances for a certain condition and only returns true if they are all true
 - .sum does not work directly on streams (only if you first convert it to a non-lazy collection like a sequence, list, or arrray)
+- don't forget you can use foldLeft on arrays as well.
  */
