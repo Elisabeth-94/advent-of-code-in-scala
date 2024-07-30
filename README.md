@@ -1,8 +1,8 @@
 # Advent of Code 2023 in Scala
-Educating myself in Functional Programming (FP) and Scala by practicing with the Advent of Code exercises.
+Scala implementations of the Advent-Of-Code exercises to practice Scala and Functional Programming.
 
-This means this code is full of comments where I explain the code to myself.
-NB: A lot of comments are also just copy-pasted from the resources below:
+Including an extensive README and comments with takeaways for each Day where I explain the basics to myself.
+Some info is literally copy-pasted from the resources below.
 
 ## Resources
 - https://docs.scala-lang.org/tutorials/scala-for-java-programmers.html -> Nice introduction if you're familiar with Java (you're at the "Algebraic datatypes and pattern matching" chapter)
