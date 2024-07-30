@@ -7,11 +7,11 @@ class Day1_TrebuchetTest extends munit.FunSuite:
     test("4hello2-int-42") {
       assertEquals(firstAndLastDigit("4hello2"), Some(42))
     }
-  
+
     test("'7' should return an Option with value 77") {
       assertEquals(firstAndLastDigit("7"), Some(77))
     }
-  
+
     test("trebuchet part 1 on given data file should return 54338") {
       val root = os.pwd
       val filePathTrebuchet: os.Path = root / "src" / "main" / "resources" / "trebuchet.txt"
@@ -35,5 +35,5 @@ class Day1_TrebuchetTest extends munit.FunSuite:
       assertEquals(firstAndLastDigitOrWrittenNumber("zoneight234"), Some(14))
       assertEquals(firstAndLastDigitOrWrittenNumber("7pqrstsixteen"), Some(76))
     }
-  
+
 
