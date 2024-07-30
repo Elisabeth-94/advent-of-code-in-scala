@@ -18,6 +18,7 @@ package nl.elisabeth.adventofcodeinscala
   // Day 2 - Cube Conundrum
   val realCubeCounts: Map[String, Int] = Map("green" -> 13, "red" -> 12, "blue" -> 14)
   println("Day 2: Cube Conundrum. Part 1 - which games would have been possible if the bag contained only 12 red cubes, "
-  + "13 green cubes, and 14 blue cubes. This is the sum: " + Day2_CubeConundrum.sumGameIdsThatFitRealCubeCounts(filePathCubeConundrum, realCubeCounts))
+  + "13 green cubes, and 14 blue cubes. This is the sum: " 
+    + Day2_CubeConundrum.sumGameIdsThatFitRealCubeCounts(filePathCubeConundrum, realCubeCounts))
   println("Day 2: Cube Conundrum. Part 2 - per game, take the product of minimum needed cubes, sum all those products: " 
     + Day2_CubeConundrum.sumProductOfMinimumCubesPerGame(filePathCubeConundrum))
