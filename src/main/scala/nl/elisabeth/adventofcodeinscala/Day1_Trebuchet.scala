@@ -18,8 +18,8 @@ object Day1_Trebuchet {
     "nine" -> "9"
   )
 
-  def trebuchetPart1(filePath: os.Path): Int = sumOfCombinedFirstAndLastDigitOfEachLine(filePath, firstAndLastDigit)
-  def trebuchetPart2(filePath: os.Path): Int = sumOfCombinedFirstAndLastDigitOfEachLine(filePath, firstAndLastDigitOrWrittenNumber)
+  def part1(filePath: os.Path): Int = sumOfCombinedFirstAndLastDigitOfEachLine(filePath, firstAndLastDigit)
+  def part2(filePath: os.Path): Int = sumOfCombinedFirstAndLastDigitOfEachLine(filePath, firstAndLastDigitOrWrittenNumber)
 
 
  // combine the first digit and the last digit of each line of text, to form a single two digit number, then take the sum of all these numbers together
