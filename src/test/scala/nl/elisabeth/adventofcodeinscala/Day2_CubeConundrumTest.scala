@@ -20,10 +20,11 @@ class Day2_CubeConundrumTest extends munit.FunSuite:
   }
 
   test("cubeConundrum part 1 on given data file should return 2512") {
-    val root = os.pwd // gets the current working directory
-    val filePathCubeConundrum: os.Path = root / "src" / "main" / "resources" / "cube-conundrum.txt"
-    val realCubeCounts = Map("green" -> 13, "red" -> 12, "blue" -> 14)
-    assertEquals(sumGameIdsThatFitRealCubeCounts(filePathCubeConundrum, realCubeCounts), 2512)
+    val root = os.pwd / "src" / "main" / "resources"
+    val filePathCubeConundrum: os.Path = root / "cube-conundrum.txt"
+    val cubeConundrumLineStream: geny.Generator[String] = os.read.lines.stream(filePathCubeConundrum)
+    val realCubeCounts: Map[String, Int] = Map("green" -> 13, "red" -> 12, "blue" -> 14)
+    assertEquals(sumGameIdsThatFitRealCubeCounts(cubeConundrumLineStream, realCubeCounts), 2512)
   }
 
   test("minimumCubesNeeded returns a map of the minimum amount of cubes needed per colour for a game (line) to be possible") {
@@ -37,7 +38,8 @@ class Day2_CubeConundrumTest extends munit.FunSuite:
   }
 
   test("cubeConundrum part 2 on given data file should return 67335") {
-    val root = os.pwd // gets the current working directory
-    val filePathCubeConundrum: os.Path = root / "src" / "main" / "resources" / "cube-conundrum.txt"
-    assertEquals(sumProductOfMinimumCubesPerGame(filePathCubeConundrum), 67335)
+    val root = os.pwd / "src" / "main" / "resources"
+    val filePathCubeConundrum: os.Path = root / "cube-conundrum.txt"
+    val cubeConundrumLineStream: geny.Generator[String] = os.read.lines.stream(filePathCubeConundrum)
+    assertEquals(sumProductOfMinimumCubesPerGame(cubeConundrumLineStream), 67335)
   }

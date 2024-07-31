@@ -18,14 +18,14 @@ object Day1_Trebuchet {
     "nine" -> "9"
   )
 
-  def trebuchetPart1(filePath: os.Path): Int = sumOfCombinedFirstAndLastDigitOfEachLine(filePath, firstAndLastDigit)
-  def trebuchetPart2(filePath: os.Path): Int = sumOfCombinedFirstAndLastDigitOfEachLine(filePath, firstAndLastDigitOrWrittenNumber)
+  def trebuchetPart1(lineStream: geny.Generator[String]): Int = sumOfCombinedFirstAndLastDigitOfEachLine(lineStream, firstAndLastDigit)
+  def trebuchetPart2(lineStream: geny.Generator[String]): Int = sumOfCombinedFirstAndLastDigitOfEachLine(lineStream, firstAndLastDigitOrWrittenNumber)
 
 
  // combine the first digit and the last digit of each line of text, to form a single two digit number, then take the sum of all these numbers together
  // combineDigits can be added as a parameter since there are two ways; One that only checks literal digits and one that also checks numbers written out.
-  def sumOfCombinedFirstAndLastDigitOfEachLine(filePath: os.Path, combineDigits: String => Option[Int]): Int =
-    val lineStream: geny.Generator[String] = os.read.lines.stream(filePath)
+  def sumOfCombinedFirstAndLastDigitOfEachLine(lineStream: geny.Generator[String], 
+                                               combineDigits: String => Option[Int]): Int =
     lineStream
       .map(combineDigits)
       .filter(_.isDefined) // filter out the None

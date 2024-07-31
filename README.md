@@ -8,6 +8,9 @@ NB: A lot of comments are also just copy-pasted from the resources below:
 - https://docs.scala-lang.org/tutorials/scala-for-java-programmers.html -> Nice introduction if you're familiar with Java (you're at the "Algebraic datatypes and pattern matching" chapter)
 - https://tourofscala.com/ -> syntax for beginners. Small exercises with cute confirmations. (you're at List Flatten)
 - https://scalacenter.github.io/scala-advent-of-code/2023/puzzles -> compare your work to these examples to see if you could have done it more efficient / shorter
+- https://www.coursera.org/learn/scala-functional-programming
+  - especially: https://www.coursera.org/learn/scala-functional-programming/supplement/Sauv3/cheat-sheet
+- book "Grokking functional programming" by Michal Plachta
 
 ## Steps to get started
 Use the Scala installer on https://docs.scala-lang.org/getting-started/index.html to get started.
@@ -50,7 +53,7 @@ Even though return types can be inferred in Scala, it is best practise to put ex
 Scala has classes and these classes can take parameters (as opposed to java classes, where you need a constructor). An instance (object) of a Scala class in created with the keyword "new".
 All classes in Scala inherit from a super-class. When no super-class is specified, scala.AnyRef is implicitly used.
 
-### Some new functionalities
+### Some functionalities that are new for me
 - **Option** is the way in Scala to handle null. It allows to encapsulate the concept of “is this value defined” or “does this variable contain a value“. Example:
   Some() is a constructor for creating an instance of the Some class, which is a subclass of Option. Some is used to wrap a value inside an Option. It signifies that there is a value present.
 
@@ -98,9 +101,18 @@ Example of apply in normal class: Once you created an instance of a class (e.g. 
 In a companion Object, you can use the apply function to create an extra constructor so to speak, so you can create instances with a different amount of parameters.
 Example of functional code with apply used in different ways can be found in the applyMethod class.
 
+- **How to read files in Scala**:
+  * read line by line:  val lines = Source.fromFile(filename).getLines()
+  * read line by line with os-lib (third party library): val lineStream: geny.Generator[String] = os.read.lines.stream(filePath)
+  Both approaches are efficient and suitable for large files as they read lines lazily (both generate a stream).
+  os-lib might be preferred if you need additional functionalities provided by the library.
+  scala.io.Source is part of the standard library and might be simpler to use for basic file reading operations.
+  Beware: The file handle remains open for the duration of the processing, which could be a long time if the processing is slow. 
+  This can be problematic if the file handle count is a limiting factor or if the program needs to open many files simultaneously.
+  Also, properly handling exceptions and ensuring that the file is closed correctly is crucial. Failing to close the file properly can lead to resource leaks.
 
-## Basics FP 
-source: book "Grokking functional programming" by Michal Plachta
+
+## Basics FP
 
 ### As much code as possible is pure
 A pure function

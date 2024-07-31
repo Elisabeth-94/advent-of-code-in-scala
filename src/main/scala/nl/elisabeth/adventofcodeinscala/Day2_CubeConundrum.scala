@@ -6,9 +6,8 @@ object Day2_CubeConundrum {
 
   // PART 1 - if a bag of cubes contains a certain amount of red, green and blue cubes, which lines (games) in the data file
   // would be possible to get out of the bag. Take the sum of all those gameIds
-  def sumGameIdsThatFitRealCubeCounts(filePath: os.Path,
+  def sumGameIdsThatFitRealCubeCounts(lineStream: geny.Generator[String],
                                       realCubeCounts: Map[String, Int]): Int =
-    val lineStream: geny.Generator[String] = os.read.lines.stream(filePath)
     lineStream
       .map(line => line.split(": |; |, "))
       .filter(alternativeCubeNumbersWithinBounds(_, realCubeCounts))
@@ -33,8 +32,7 @@ object Day2_CubeConundrum {
 
   // PART 2 - Per game (line) what is the fewest number of cubes of each color that could have been in the bag to make the game possible?
   // Take the power of these three numbers, and then the sum of all games
-  protected[adventofcodeinscala] def sumProductOfMinimumCubesPerGame(filePath: os.Path): Int =
-    val lineStream: geny.Generator[String] = os.read.lines.stream(filePath)
+  protected[adventofcodeinscala] def sumProductOfMinimumCubesPerGame(lineStream: geny.Generator[String]): Int =
     lineStream
       .map(line => line.split(": |; |, "))
       .map(minimumCubesNeeded)
@@ -57,6 +55,7 @@ object Day2_CubeConundrum {
             else minimumCubesNeededHelper(line.tail, cubeCounter)
           case None => minimumCubesNeededHelper(line.tail, cubeCounter)
 
+  // without recursion
   protected[adventofcodeinscala] def alternativeMinimumCubesNeeded(line: Array[String]): Map[String, Int] =
     line.drop(1).foldLeft(Map("blue" -> 0, "green" -> 0, "red" -> 0)) { 
       (cubeCounter, entry) =>
