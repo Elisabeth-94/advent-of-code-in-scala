@@ -5,7 +5,10 @@ This means this code is full of comments where I explain the code to myself.
 NB: A lot of comments are also just copy-pasted from the resources below.
 
 ## Software stack
-- JDK
+- JVM 21.0.3
+- Scala 3.4.2
+- SBT 1.10.1
+- 
 
 ## Resources
 - https://docs.scala-lang.org/tutorials/scala-for-java-programmers.html -> Nice introduction if you're familiar with Java (you're at the "Algebraic datatypes and pattern matching" chapter)
@@ -50,11 +53,6 @@ Scala is short for "scalable", since software build in Scala is easily scaled. S
 Scala is both Object Oriented and Functional.
 
 All classes from the java.lang package are imported by default. In the sbt build file you can add third party libraries, as seen for MUnit.
-There is no method called main. Instead, you use the @main annotation which marks a method as an entry-point of the application (ONLY IN SCALA3!).
-This main program does not need to be wrapped in a class definition. Scala 3 supports top-level method definitions, which are ideal for program entry-points.
-Program entry-points optionally take parameters, which are populated by the command line arguments: @main def HelloWorld(args: String*): Unit = ...
-You can pass arguments to your @main method from the sbt shell by using the run command followed by the arguments.
-The arguments passed from the command line are collected into a Seq[String]. You can use these arguments in your code as a sequence (similar to a list).
 
 Scala is a pure object-oriented language in the sense that everything is an object, including numbers or functions. It differs from Java in that respect, since Java distinguishes primitive types (such as boolean and int) from reference types.
 You can pass methods as arguments, store them in variables, and return them from other functions, all without special syntax (specific Scala FP functionality).
@@ -84,16 +82,15 @@ In Scala, when you are using sbt (Simple Build Tool) to build an application, yo
 - **Option** is the way in Scala to handle null. It allows to encapsulate the concept of “is this value defined” or “does this variable contain a value“. Example:
   Some() is a constructor for creating an instance of the Some class, which is a subclass of Option. Some is used to wrap a value inside an Option. It signifies that there is a value present.
 
-    ``` 
-    val choice1: Boolean = true
-    val result1: Option[Int] = if(choice1) None else Some(1)
-    assert(result1.isEmpty)
-    val choice2: Boolean = false
-    val result2: Option[Int] = if(choice2) None else Some(1)
-    assert(result2.isDefined)
-    println("Congratulations ! Believe in yourself !")
+  ``` 
+  val choice1: Boolean = true
+  val result1: Option[Int] = if(choice1) None else Some(1)
+  assert(result1.isEmpty)
+  val choice2: Boolean = false
+  val result2: Option[Int] = if(choice2) None else Some(1)
+  assert(result2.isDefined)
+  println("Congratulations ! Believe in yourself !")
   ```
-
 
 - **val VS lazy val VS def**
   val: Computed once when declared
