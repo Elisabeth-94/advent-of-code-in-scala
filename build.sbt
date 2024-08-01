@@ -5,9 +5,9 @@ lazy val root = project
   .settings(
     name := "advent-of-code-in-scala",
     version := "0.1.0-SNAPSHOT",
-
     scalaVersion := scala3Version,
+    organization := "nl.elisabeth",
+    description := "A project for solving Advent of Code challenges in Scala.",
 
-    libraryDependencies ++= Seq("org.scalameta" %% "munit" % "0.7.29" % Test,     // This enables you to work with MUnit for your Unit tests
-                        "com.lihaoyi" %% "os-lib" % "0.10.1") // this enables you to work with Scala's OS-lib (file reading and writing)
+    libraryDependencies += "org.scalameta" %% "munit" % "0.7.29" % Test // This enables you to work with MUnit for your Unit tests
   )

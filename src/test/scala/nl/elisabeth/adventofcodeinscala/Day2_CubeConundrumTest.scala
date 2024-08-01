@@ -2,6 +2,8 @@ package nl.elisabeth.adventofcodeinscala
 
 import nl.elisabeth.adventofcodeinscala.Day2_CubeConundrum.*
 
+import scala.io.Source
+
 class Day2_CubeConundrumTest extends munit.FunSuite:
 
   test("getGameId from string. 'Game 30: 5 red, 3 blue; 2 red; 2 green, 6 blue, 7 red; 5 red' returns 30") {
@@ -20,10 +22,10 @@ class Day2_CubeConundrumTest extends munit.FunSuite:
   }
 
   test("cubeConundrum part 1 on given data file should return 2512") {
-    val root = os.pwd // gets the current working directory
-    val filePathCubeConundrum: os.Path = root / "src" / "main" / "resources" / "cube-conundrum.txt"
-    val realCubeCounts = Map("green" -> 13, "red" -> 12, "blue" -> 14)
-    assertEquals(sumGameIdsThatFitRealCubeCounts(filePathCubeConundrum, realCubeCounts), 2512)
+    val inputStream = getClass.getResourceAsStream("/cube-conundrum.txt")
+    val lines = Source.fromInputStream(inputStream).getLines() // datatype is iterator[String]
+    val lazyLines: LazyList[String] = LazyList.unfold(lines) { it => if (it.hasNext) Some((it.next(), it)) else None }
+    assertEquals(part1SumGameIdsThatFitRealCubeCounts(lazyLines), 2512)
   }
 
   test("minimumCubesNeeded returns a map of the minimum amount of cubes needed per colour for a game (line) to be possible") {
@@ -37,7 +39,8 @@ class Day2_CubeConundrumTest extends munit.FunSuite:
   }
 
   test("cubeConundrum part 2 on given data file should return 67335") {
-    val root = os.pwd // gets the current working directory
-    val filePathCubeConundrum: os.Path = root / "src" / "main" / "resources" / "cube-conundrum.txt"
-    assertEquals(sumProductOfMinimumCubesPerGame(filePathCubeConundrum), 67335)
+    val inputStream = getClass.getResourceAsStream("/cube-conundrum.txt")
+    val lines = Source.fromInputStream(inputStream).getLines() // datatype is iterator[String]
+    val lazyLines: LazyList[String] = LazyList.unfold(lines) { it => if (it.hasNext) Some((it.next(), it)) else None }
+    assertEquals(part2SumProductOfMinimumCubesPerGame(lazyLines), 67335)
   }

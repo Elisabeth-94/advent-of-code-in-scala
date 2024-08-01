@@ -2,6 +2,8 @@ package nl.elisabeth.adventofcodeinscala
 
 import nl.elisabeth.adventofcodeinscala.Day1_Trebuchet.*
 
+import scala.io.Source
+
 class Day1_TrebuchetTest extends munit.FunSuite:
 
     test("4hello2-int-42") {
@@ -13,15 +15,17 @@ class Day1_TrebuchetTest extends munit.FunSuite:
     }
 
     test("trebuchet part 1 on given data file should return 54338") {
-      val root = os.pwd
-      val filePathTrebuchet: os.Path = root / "src" / "main" / "resources" / "trebuchet.txt"
-      assertEquals(sumOfCombinedFirstAndLastDigitOfEachLine(filePathTrebuchet, firstAndLastDigit), 54338)
+      val inputStream = getClass.getResourceAsStream("/trebuchet.txt")
+      val lines = Source.fromInputStream(inputStream).getLines() // datatype is iterator[String]
+      val lazyLines: LazyList[String] = LazyList.unfold(lines) { it => if (it.hasNext) Some((it.next(), it)) else None}
+      assertEquals(sumOfCombinedFirstAndLastDigitOfEachLine(lazyLines, firstAndLastDigit), 54338)
     }
 
     test("trebuchet part 2 on given data file should return 53389") {
-      val root = os.pwd
-      val filePathTrebuchet: os.Path = root / "src" / "main" / "resources" / "trebuchet.txt"
-      assertEquals(sumOfCombinedFirstAndLastDigitOfEachLine(filePathTrebuchet, firstAndLastDigitOrWrittenNumber), 53389)
+      val inputStream = getClass.getResourceAsStream("/trebuchet.txt")
+      val lines = Source.fromInputStream(inputStream).getLines() // datatype is iterator[String]
+      val lazyLines: LazyList[String] = LazyList.unfold(lines) { it => if (it.hasNext) Some((it.next(), it)) else None }
+      assertEquals(sumOfCombinedFirstAndLastDigitOfEachLine(lazyLines, firstAndLastDigitOrWrittenNumber), 53389)
     }
 
     test("firstDigitWithLastDigitInString - 'two1nine' should return an Option with value 2") {
