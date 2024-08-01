@@ -5,13 +5,10 @@ import scala.io.Source
 object Main {
   def main(args: Array[String]): Unit = {
 
-    // OUTPUT
     println("\nOUTPUT OF ALL ADVENT OF CODE EXERCISES\n")
     printDay1Trebuchet()
     printDay2CubeConundrum()
     printDay3GearRatios()
-    printDay4()
-    printDay5()
 
     // This function takes three strings, and two functions as arguments. It prevents repetition of code to safely open a file as a stream (try)
     // TODO: this function signature lies! maybe curry it up?
@@ -54,26 +51,6 @@ object Main {
       println("Day 3: Gear Ratios")
 //      val filePathGearRatios: os.Path = root / "gear-ratios.txt"
 //      val gearRatiosLineStream: geny.Generator[String] = os.read.lines.stream(filePathGearRatios)
-
-      println(
-        "Day 3: Gear Ratios" +
-          "\nPart 1 - " +
-          "\nPart 2 - " +
-          "\n")
-
-    def printDay4(): Unit =
-      println(
-        "Day 4: " +
-          "\nPart 1 - " +
-          "\nPart 2 - " +
-          "\n")
-
-    def printDay5(): Unit =
-      println(
-        "Day 5: " +
-          "\nPart 1 - " +
-          "\nPart 2 - " +
-          "\n")
 
   }
 }
