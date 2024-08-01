@@ -4,18 +4,13 @@ import scala.io.Source
 
 object Day3_GearRatios {
 
-  case class validNumber(value: Int, startCoord: Array[Int], endCoord: Array[Int])
+  // case class validNumber(value: Int, startCoord: Array[Int], endCoord: Array[Int])
 
-  def sumNumbersWithNeighbourSymbolAlt(filePath: String): Int =
-    val source = Source.fromFile(filePath)
-    try {
-      source.getLines.iterator
+  def sumNumbersWithNeighbourSymbolAlt(lazyLines: LazyList[String]): Int =
+      lazyLines
         .sliding(3)
         .flatMap(processThreeLines)
         .sum
-    }
-    finally source.close
-
 
   private def processThreeLines(lines: Seq[String]): List[Int] =
     processThreeLinesHelper(lines, List())

@@ -2,6 +2,8 @@ package nl.elisabeth.adventofcodeinscala
 
 import nl.elisabeth.adventofcodeinscala.Day2_CubeConundrum.*
 
+import scala.io.Source
+
 class Day2_CubeConundrumTest extends munit.FunSuite:
 
   test("getGameId from string. 'Game 30: 5 red, 3 blue; 2 red; 2 green, 6 blue, 7 red; 5 red' returns 30") {
@@ -20,11 +22,10 @@ class Day2_CubeConundrumTest extends munit.FunSuite:
   }
 
   test("cubeConundrum part 1 on given data file should return 2512") {
-    val root = os.pwd / "src" / "main" / "resources"
-    val filePathCubeConundrum: os.Path = root / "cube-conundrum.txt"
-    val cubeConundrumLineStream: geny.Generator[String] = os.read.lines.stream(filePathCubeConundrum)
-    val realCubeCounts: Map[String, Int] = Map("green" -> 13, "red" -> 12, "blue" -> 14)
-    assertEquals(sumGameIdsThatFitRealCubeCounts(cubeConundrumLineStream, realCubeCounts), 2512)
+    val inputStream = getClass.getResourceAsStream("/cube-conundrum.txt")
+    val lines = Source.fromInputStream(inputStream).getLines() // datatype is iterator[String]
+    val lazyLines: LazyList[String] = LazyList.unfold(lines) { it => if (it.hasNext) Some((it.next(), it)) else None }
+    assertEquals(part1SumGameIdsThatFitRealCubeCounts(lazyLines), 2512)
   }
 
   test("minimumCubesNeeded returns a map of the minimum amount of cubes needed per colour for a game (line) to be possible") {
@@ -38,8 +39,8 @@ class Day2_CubeConundrumTest extends munit.FunSuite:
   }
 
   test("cubeConundrum part 2 on given data file should return 67335") {
-    val root = os.pwd / "src" / "main" / "resources"
-    val filePathCubeConundrum: os.Path = root / "cube-conundrum.txt"
-    val cubeConundrumLineStream: geny.Generator[String] = os.read.lines.stream(filePathCubeConundrum)
-    assertEquals(sumProductOfMinimumCubesPerGame(cubeConundrumLineStream), 67335)
+    val inputStream = getClass.getResourceAsStream("/cube-conundrum.txt")
+    val lines = Source.fromInputStream(inputStream).getLines() // datatype is iterator[String]
+    val lazyLines: LazyList[String] = LazyList.unfold(lines) { it => if (it.hasNext) Some((it.next(), it)) else None }
+    assertEquals(part2SumProductOfMinimumCubesPerGame(lazyLines), 67335)
   }

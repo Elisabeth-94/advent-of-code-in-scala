@@ -6,9 +6,9 @@ object Day2_CubeConundrum {
 
   // PART 1 - if a bag of cubes contains a certain amount of red, green and blue cubes, which lines (games) in the data file
   // would be possible to get out of the bag. Take the sum of all those gameIds
-  def sumGameIdsThatFitRealCubeCounts(lineStream: geny.Generator[String],
-                                      realCubeCounts: Map[String, Int]): Int =
-    lineStream
+  def part1SumGameIdsThatFitRealCubeCounts(lazyLines: LazyList[String]): Int =
+    val realCubeCounts: Map[String, Int] = Map("green" -> 13, "red" -> 12, "blue" -> 14)
+    lazyLines
       .map(line => line.split(": |; |, "))
       .filter(alternativeCubeNumbersWithinBounds(_, realCubeCounts))
       .map(getGameId)
@@ -32,8 +32,8 @@ object Day2_CubeConundrum {
 
   // PART 2 - Per game (line) what is the fewest number of cubes of each color that could have been in the bag to make the game possible?
   // Take the power of these three numbers, and then the sum of all games
-  protected[adventofcodeinscala] def sumProductOfMinimumCubesPerGame(lineStream: geny.Generator[String]): Int =
-    lineStream
+  protected[adventofcodeinscala] def part2SumProductOfMinimumCubesPerGame(lazyLines: LazyList[String]): Int =
+    lazyLines
       .map(line => line.split(": |; |, "))
       .map(minimumCubesNeeded)
       .map(dict => dict.values.product)
