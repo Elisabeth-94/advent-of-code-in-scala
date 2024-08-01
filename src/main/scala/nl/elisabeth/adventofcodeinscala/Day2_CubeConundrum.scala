@@ -4,11 +4,11 @@ import scala.annotation.tailrec
 
 object Day2_CubeConundrum {
   
-  def part1(filePath: os.Path, realCubeCounts: Map[String, Int]): Int = 
-    sumGameIdsThatFitRealCubeCounts(filePath, realCubeCounts)
+  def part1(lazyLines: LazyList[String]): Int = 
+    part1SumGameIdsThatFitRealCubeCounts(lazyLines)
     
-  def part2(filePath: os.Path): Int =
-    sumProductOfMinimumCubesPerGame(filePath)
+  def part2(lazyLines: LazyList[String]): Int =
+    part2SumProductOfMinimumCubesPerGame(lazyLines)
 
   // PART 1 - if a bag of cubes contains a certain amount of red, green and blue cubes, which lines (games) in the data file
   // would be possible to get out of the bag. Take the sum of all those gameIds
