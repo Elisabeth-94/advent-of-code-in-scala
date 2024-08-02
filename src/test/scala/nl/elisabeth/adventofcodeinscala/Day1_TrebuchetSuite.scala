@@ -5,7 +5,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 import scala.io.Source
 
-class Day1_TrebuchetTest extends AnyFunSuite:
+class Day1_TrebuchetSuite extends AnyFunSuite:
 
     test("firstAndLastDigit input '4hello2-int-42' should return an Option with 42") {
       assert(firstAndLastDigit("4hello2").contains(42))

@@ -18,21 +18,23 @@ object Day1_Trebuchet {
     "nine" -> "9"
   )
 
-  def part1SumOfCombinedFirstAndLastDigitOfEachLine(lineStream: LazyList[String]): Int = sumOfCombinedFirstAndLastDigitOfEachLine(lineStream, firstAndLastDigit)
-  def part2SumOfCombinedFirstAndLastDigitOfEachLineIncludingWrittenNumbers(lineStream: LazyList[String]): Int = sumOfCombinedFirstAndLastDigitOfEachLine(lineStream, firstAndLastDigitOrWrittenNumber)
+  def part1SumOfCombinedFirstAndLastDigitOfEachLine(lineStream: LazyList[String]): Int = 
+    sumOfCombinedFirstAndLastDigitOfEachLine(lineStream, firstAndLastDigit)
+  
+  
+  def part2SumOfCombinedFirstAndLastDigitOfEachLineIncludingWrittenNumbers(lineStream: LazyList[String]): Int = 
+    sumOfCombinedFirstAndLastDigitOfEachLine(lineStream, firstAndLastDigitOrWrittenNumber)
 
-
- // combine the first digit and the last digit of each line of text, to form a single two digit number, then take the sum of all these numbers together
- // combineDigits can be added as a parameter since there are two ways; One that only checks literal digits and one that also checks numbers written out.
+  
   def sumOfCombinedFirstAndLastDigitOfEachLine(lineStream: LazyList[String],
                                                combineDigits: String => Option[Int]): Int =
     lineStream
       .map(combineDigits)
       .filter(_.isDefined) // filter out the None
-      .map(_.get).sum // take the sum of all the values generated in the stream
+      .map(_.get) // get the values from the Options
+      .sum // take the sum of all the values generated in the stream
 
 
-  // Functions for part 1
   @tailrec
   def firstAndLastDigit(line: String): Option[Int] =
     line.length match
@@ -41,6 +43,7 @@ object Day1_Trebuchet {
         if (line.head.isDigit) addLastDigitToFirst(line, line.head.toString)
         else firstAndLastDigit(line.tail)
 
+  
   @tailrec
   private def addLastDigitToFirst(line: String, firstDigit: String): Option[Int] =
     line.length match
@@ -49,8 +52,7 @@ object Day1_Trebuchet {
         if (line.last.isDigit) Some(firstDigit.concat(line.last.toString).toInt)
         else addLastDigitToFirst(line.dropRight(1), firstDigit)
 
-
-  // Functions for part 2
+  
   @tailrec
   def firstAndLastDigitOrWrittenNumber(line: String): Option[Int] =
     line.length match
@@ -64,6 +66,7 @@ object Day1_Trebuchet {
           else firstAndLastDigitOrWrittenNumber(line.tail)
         else firstAndLastDigitOrWrittenNumber(line.tail)
 
+  
   @tailrec
   private def addLastDigitOrWrittenNumberToFirst(line: String, firstDigit: String): Option[Int] =
     line.length match
@@ -77,6 +80,7 @@ object Day1_Trebuchet {
           else addLastDigitOrWrittenNumberToFirst(line.dropRight(1), firstDigit)
         else addLastDigitOrWrittenNumberToFirst(line.dropRight(1), firstDigit)
 
+  
   @tailrec
   private def firstWrittenDigitInString(line: String, digitWordLength: Int): Option[Int] =
     if (digitWordLength < 3) return firstAndLastDigitOrWrittenNumber(line.tail)
@@ -84,6 +88,7 @@ object Day1_Trebuchet {
       case Some(digit) => addLastDigitOrWrittenNumberToFirst(line.tail, digit)
       case None => firstWrittenDigitInString(line, digitWordLength - 1)
 
+  
   @tailrec
   private def lastWrittenDigitInString(line: String, firstDigit: String, digitWordLength: Int): Option[Int] =
     if (digitWordLength < 3) return addLastDigitOrWrittenNumberToFirst(line.dropRight(1), firstDigit)

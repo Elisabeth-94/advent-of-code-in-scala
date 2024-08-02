@@ -10,7 +10,7 @@ object Main {
     printDay2CubeConundrum()
     printDay3GearRatios()
 
-    // This function takes three strings, and two functions as arguments. It prevents repetition of code to safely open a file as a stream (try)
+
     // TODO: this function signature lies! maybe curry it up?
     def readFileAsStream[T](fileName: String,
                          part1Description: String,
@@ -21,10 +21,10 @@ object Main {
       if (inputStream != null)
         try
           val lines = Source.fromInputStream(inputStream).getLines() //this is now an Iterator[String]
-          val lazyLines: LazyList[String] = LazyList.unfold(lines) { it => if (it.hasNext) Some((it.next(), it)) else None } // this is now a lazy list
+          val lazyLines: LazyList[String] = 
+            LazyList.unfold(lines) { it => if (it.hasNext) Some((it.next(), it)) else None } // now a LazyList[String]
           println(part1Description + part1Function(lazyLines) + part2Description + part2Function(lazyLines) + "\n")
-        finally
-          inputStream.close()
+        finally inputStream.close()
       else println("\nResource not found\n")
 
 
