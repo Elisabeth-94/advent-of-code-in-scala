@@ -5,7 +5,7 @@ This means this code is full of comments where I explain the code to myself.
 NB: A lot of comments are also just copy-pasted from the resources below.
 
 ## Software stack
-- JVM 21.0.3
+- Java 22.0.2
 - Scala 3.4.2
 - Scalatest 3.2.18
 - SBT 1.10.1
@@ -35,16 +35,23 @@ In Scala projects, sbt is the most commonly used build tool. It provides feature
 - `sbt test` compiles and runs all tests
 - `sbt package` compiles your code and creates a JAR file that contains your compiled classes and any dependencies. -> You use this command when you want to create a deployable or executable artifact of your application. This is especially useful for distribution or running the application in different environments.
 - `sbt clean` deletes all generated files in the target directory
-- start a Scala 3 REPL with `sbt console` (Read-Evaluate-Print Loop: an interactive programming environment that takes user inputs (reads), executes the inputs (evaluates), and returns the result to the user (prints). This cycle repeats (loops), allowing users to interactively write and test code snippets.)
-- If you only type `sbt` you enter the sbt shell, this will drop you into the sbt shell with the prompt (>) where you can execute sbt commands directly. Quit the shell with `exit`.
+- `sbt console` start a Scala 3 REPL (Read-Evaluate-Print Loop: an interactive programming environment that takes user inputs (reads), executes the inputs (evaluates), and returns the result to the user (prints). This cycle repeats (loops), allowing users to interactively write and test code snippets.)
+- `sbt` you enter the sbt shell (prompt (>. Here you can execute sbt commands directly. Quit the shell with `exit`.
 By staying in the sbt shell, you avoid the overhead of repeatedly starting sbt and loading the build configuration, which can make your build process more efficient (much faster! Recommended for everyday coding).
-In build.sbt you can define dependencies for your project, like the MUnit testing framework.
+In build.sbt you can define dependencies for your project, like your testing library.
 
 ## Unit Testing
 2 popular Scala testing libraries
 1. **Scalatest** is the most widely used testing framework in the scala community (extensive documentation and community support). It has a wide variety of testing styles.
+Extend the test classes as follows: class exampleSuite extends AnyFunSuite:
 2. **MUnit** is designed to be a minimalistic testing framework, which makes it simpler and easier to learn and use. Its API is straightforward and intuitive. 
-It's written on top of JUnit (https://scalameta.org/munit/docs/getting-started.html).  If you have experience with JUnit, it works intuitively. Extend the test classes as follows: "class exampleTest extends munit.FunSuite" to let them use MUnit. Ensure Intellij's JUnit plugin is enabled (settings > plugins). At the moment of writing, the newest version of MUnit seems not to be able to run tests separately (scalameta.org/munit 1.0.0)
+It's written on top of JUnit (https://scalameta.org/munit/docs/getting-started.html).  If you have experience with JUnit, it works intuitively. 
+Extend the test classes as follows: "class exampleSuite extends munit.FunSuite" to let them use MUnit. 
+Ensure Intellij's JUnit plugin is enabled (settings > plugins). At the moment of writing, 
+the newest version of MUnit seems not to be able to run tests separately (scalameta.org/munit 1.0.0). 
+When using MUnit, the assertEquals method also returns you the difference between the observed and expected values when a test fails.
+Test classes in scala are named ClassNameSuite
+Test syntax: `test("description") { ... }`
 
 ## Basics Scala
 
@@ -78,7 +85,9 @@ In Scala, when you are using sbt (Simple Build Tool) to build an application, yo
 3. You can then add extra classes that can be used in the MyApp Object class.
 
 
-### Some functionalities that are new for me
+### Some functionalities and syntax that is new to me
+- scala indentation is 2 spaces instead of 4!
+- scala defaults to call-by-value
 - **Option** is the way in Scala to handle null. It allows to encapsulate the concept of “is this value defined” or “does this variable contain a value“. Example:
   Some() is a constructor for creating an instance of the Some class, which is a subclass of Option. Some is used to wrap a value inside an Option. It signifies that there is a value present.
 

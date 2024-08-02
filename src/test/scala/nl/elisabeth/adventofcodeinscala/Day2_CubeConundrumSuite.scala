@@ -5,7 +5,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 import scala.io.Source
 
-class Day2_CubeConundrumTest extends AnyFunSuite:
+class Day2_CubeConundrumSuite extends AnyFunSuite:
 
   test("getGameId from string returns the number in the first element in an Array[String]") {
     val splitLine = "Game 30: 5 red, 3 blue; 2 red; 2 green, 6 blue, 7 red; 5 red".split(": |; |, ")
