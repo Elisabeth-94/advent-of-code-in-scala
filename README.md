@@ -7,10 +7,8 @@ NB: A lot of comments are also just copy-pasted from the resources below.
 ## Software stack
 - JVM 21.0.3
 - Scala 3.4.2
+- Scalatest 3.2.18
 - SBT 1.10.1
-
-Including an extensive README and comments with takeaways for each Day where I explain the basics to myself.
-Some info is literally copy-pasted from the resources below.
 
 ## Resources
 - https://docs.scala-lang.org/tutorials/scala-for-java-programmers.html -> Nice introduction if you're familiar with Java (you're at the "Algebraic datatypes and pattern matching" chapter)
@@ -43,10 +41,10 @@ By staying in the sbt shell, you avoid the overhead of repeatedly starting sbt a
 In build.sbt you can define dependencies for your project, like the MUnit testing framework.
 
 ## Unit Testing
-MUnit is a Scala testing library (framework) written on top of JUnit (https://scalameta.org/munit/docs/getting-started.html).
-If you have experience with JUnit, it works intuitively. Extend the test classes as follows: "class exampleTest extends munit.FunSuite" to let them use MUnit.
-Ensure Intellij's JUnit plugin is enabled (settings > plugins).
-At the moment of writing, the newest version of MUnit seems not to be able to run tests separately (scalameta.org/munit 1.0.0)
+2 popular Scala testing libraries
+1. **Scalatest** is the most widely used testing framework in the scala community (extensive documentation and community support). It has a wide variety of testing styles.
+2. **MUnit** is designed to be a minimalistic testing framework, which makes it simpler and easier to learn and use. Its API is straightforward and intuitive. 
+It's written on top of JUnit (https://scalameta.org/munit/docs/getting-started.html).  If you have experience with JUnit, it works intuitively. Extend the test classes as follows: "class exampleTest extends munit.FunSuite" to let them use MUnit. Ensure Intellij's JUnit plugin is enabled (settings > plugins). At the moment of writing, the newest version of MUnit seems not to be able to run tests separately (scalameta.org/munit 1.0.0)
 
 ## Basics Scala
 
@@ -54,7 +52,7 @@ Scala is short for "scalable", since software build in Scala is easily scaled. S
 (Virtually all programming languages require some form of a runtime environment to execute their code, and this runtime environment typically runs on top of an operating system).
 Scala is both Object Oriented and Functional.
 
-All classes from the java.lang package are imported by default. In the sbt build file you can add third party libraries, as seen for MUnit.
+All classes from the java.lang package are imported by default. In the sbt build file you can add third party libraries, as seen for the testing suite.
 
 Scala is a pure object-oriented language in the sense that everything is an object, including numbers or functions. It differs from Java in that respect, since Java distinguishes primitive types (such as boolean and int) from reference types.
 You can pass methods as arguments, store them in variables, and return them from other functions, all without special syntax (specific Scala FP functionality).
@@ -129,11 +127,40 @@ In a companion Object, you can use the apply function to create an extra constru
 Example of functional code with apply used in different ways can be found in the applyMethod class.
 
 
-- **How to read files in Scala**:
-  * read line by line:  val lines = `Source.fromFile(filename).getLines()`
-  * read line by line with os-lib (third party library): val lineStream: geny.Generator[String] = `os.read.lines.stream(filePath)`
-  Both approaches are efficient and suitable for large files as they read lines lazily (both generate a stream).
-  os-lib might be preferred if you need additional functionalities provided by the library.
+- **How to read files in Scala as streams**:
+  * scala.io.Source library:  
+    1. Get yourself a mutable stream
+    
+      `
+      val lines = Source.fromFile(filename).getLines() // returns an Iterator[String] which is a mutable stream (lazy reading), which can only be passed once
+      // operations
+      lines.close()
+      `
+  
+    2. Get yourself an immutable stream
+    
+      ```
+      val inputStream = getClass.getResourceAsStream(fileName) // resource can be null / not found. Use if-statement to check
+      val lines =  Source.fromInputStream(inputStream).getLines() 
+      //this is now an Iterator[String] (getResourceAsStream(fileName): This gets an InputStream for a resource file. It's useful for files packaged with the application rather than files located on the filesystem.)
+      val lazyLines: LazyList[String] = LazyList.unfold(lines) { it => if (it.hasNext) Some((it.next(), it)) else None } // this is now a lazy list, which is an immutable stream which canbe used repeatedly
+      // operations
+      inputStream.close() // use a try-finally block, which makes sure the resource is closed even if an exception occurs during processing.
+      ```
+
+       Use .getResourceAsStream when you need to access a resource file as an input stream, typically for resources within the classpath (it returns a binary stream, i.e. It does not immediately interpret the contents of the file (e.g., as text lines).).
+       Use .getLines when you need to read and process a text file line by line, either from a file or an input stream (it returns a stream of Strings).
+       You can combine both by first using .getResourceAsStream to get the input stream and then Source.fromInputStream followed by .getLines to read the text lines from the resource.
+  * os-lib library
+    1. Similar approach. The advantage is that this library closes the file for you. Disadvantage is that this library is a bit less intuitive for beginners
+    ```
+    val resource = getClass.getClassLoader.getResource(resourceName) // resource can be null / not found: use a try-finally block
+    val path = os.Path(resource.toURI)
+    val lines: Iterator[String] = os.read.lines(path)
+    LazyList.from(lines) // Convert Iterator to LazyList
+    ```
+  All these approaches are efficient and suitable for large files as they read lines lazily (both generate a stream).
+  os-lib might be preferred if you need additional functionalities provided by the library. However, it is a bit less intuitive (e.g. takes some extra steps make file paths independent of system)
   scala.io.Source is part of the standard library and might be simpler to use for basic file reading operations.
   Beware: The file handle remains open for the duration of the processing, which could be a long time if the processing is slow. 
   This can be problematic if the file handle count is a limiting factor or if the program needs to open many files simultaneously.
