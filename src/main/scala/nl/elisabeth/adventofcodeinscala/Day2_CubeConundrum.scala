@@ -3,12 +3,6 @@ package nl.elisabeth.adventofcodeinscala
 import scala.annotation.tailrec
 
 object Day2_CubeConundrum {
-  
-  def part1(lazyLines: LazyList[String]): Int = 
-    part1SumGameIdsThatFitRealCubeCounts(lazyLines)
-    
-  def part2(lazyLines: LazyList[String]): Int =
-    part2SumProductOfMinimumCubesPerGame(lazyLines)
 
   // PART 1 - if a bag of cubes contains a certain amount of red, green and blue cubes, which lines (games) in the data file
   // would be possible to get out of the bag. Take the sum of all those gameIds
@@ -17,8 +11,7 @@ object Day2_CubeConundrum {
     lazyLines
       .map(line => line.split(": |; |, "))
       .filter(alternativeCubeNumbersWithinBounds(_, realCubeCounts))
-      .map(getGameId)
-      .foldLeft(0)(_ + _)
+      .map(getGameId).sum
 
   protected[adventofcodeinscala] def alternativeCubeNumbersWithinBounds(colourCountStrings: Array[String],
                                                                         realCubeCounts: Map[String, Int]): Boolean =
@@ -42,8 +35,7 @@ object Day2_CubeConundrum {
     lazyLines
       .map(line => line.split(": |; |, "))
       .map(minimumCubesNeeded)
-      .map(dict => dict.values.product)
-      .foldLeft(0)(_ + _)
+      .map(dict => dict.values.product).sum
 
   protected[adventofcodeinscala] def minimumCubesNeeded(line: Array[String]): Map[String, Int] =
     val cubeCounter = Map("blue" -> 0, "green" -> 0, "red" -> 0)

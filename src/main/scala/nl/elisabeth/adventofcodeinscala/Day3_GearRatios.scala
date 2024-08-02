@@ -1,6 +1,5 @@
 package nl.elisabeth.adventofcodeinscala
 import scala.annotation.tailrec
-import scala.io.Source
 
 object Day3_GearRatios {
 

@@ -18,8 +18,8 @@ object Day1_Trebuchet {
     "nine" -> "9"
   )
 
-  def trebuchetPart1(lineStream: LazyList[String]): Int = sumOfCombinedFirstAndLastDigitOfEachLine(lineStream, firstAndLastDigit)
-  def trebuchetPart2(lineStream: LazyList[String]): Int = sumOfCombinedFirstAndLastDigitOfEachLine(lineStream, firstAndLastDigitOrWrittenNumber)
+  def part1SumOfCombinedFirstAndLastDigitOfEachLine(lineStream: LazyList[String]): Int = sumOfCombinedFirstAndLastDigitOfEachLine(lineStream, firstAndLastDigit)
+  def part2SumOfCombinedFirstAndLastDigitOfEachLineIncludingWrittenNumbers(lineStream: LazyList[String]): Int = sumOfCombinedFirstAndLastDigitOfEachLine(lineStream, firstAndLastDigitOrWrittenNumber)
 
 
  // combine the first digit and the last digit of each line of text, to form a single two digit number, then take the sum of all these numbers together
@@ -29,8 +29,7 @@ object Day1_Trebuchet {
     lineStream
       .map(combineDigits)
       .filter(_.isDefined) // filter out the None
-      .map(_.get) // take the values from the Options
-      .fold(0)(_ + _) // take the sum of all the values generated in the stream
+      .map(_.get).sum // take the sum of all the values generated in the stream
 
 
   // Functions for part 1

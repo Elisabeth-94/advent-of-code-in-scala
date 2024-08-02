@@ -33,8 +33,8 @@ object Main {
       readFileAsStream("/trebuchet.txt",
         "\nPart 1 - Text file: Take the first and last digit in each line combined into a number. Sum numbers = ",
         "\nPart 2 - Text file: Digits can also be written out like 'two'. Sum numbers = ",
-        Day1_Trebuchet.trebuchetPart1,
-        Day1_Trebuchet.trebuchetPart2)
+        Day1_Trebuchet.part1SumOfCombinedFirstAndLastDigitOfEachLine,
+        Day1_Trebuchet.part2SumOfCombinedFirstAndLastDigitOfEachLineIncludingWrittenNumbers)
 
 
     def printDay2CubeConundrum(): Unit =
