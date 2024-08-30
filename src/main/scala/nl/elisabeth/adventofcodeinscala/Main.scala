@@ -40,7 +40,7 @@ object Main {
     def printDay2CubeConundrum(): Unit =
       println("Day 2: Cube Conundrum")
       readFileAsStream("/cube-conundrum.txt",
-        "\nPart 1 - Text file: Lines of game output. Which games would have been possible if the bag contained only"+
+        "\nPart 1 - Text file: Lines of game output. Which games would have been possible if the bag contained only "+
           "12 red cubes, 13 green cubes, and 14 blue cubes. Sum gameId's = ",
         "\nPart 2 - Text file: per game (line), take the product of minimum needed cubes. Sum products = ",
         Day2_CubeConundrum.part1SumGameIdsThatFitRealCubeCounts,

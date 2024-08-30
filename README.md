@@ -12,7 +12,7 @@ NB: A lot of comments are also just copy-pasted from the resources below.
 
 ## Resources
 - https://docs.scala-lang.org/tutorials/scala-for-java-programmers.html -> Nice introduction if you're familiar with Java (you're at the "Algebraic datatypes and pattern matching" chapter)
-- https://tourofscala.com/ -> syntax for beginners. Small exercises with cute confirmations. (you're at List Flatten)
+- https://tourofscala.com/ -> syntax for beginners. Small exercises with cute confirmations. (you're at Try)
 - https://scalacenter.github.io/scala-advent-of-code/2023/puzzles -> compare your work to these examples to see if you could have done it more efficient / shorter
 - https://www.scala-sbt.org/1.x/docs/Running.html
 - https://www.coursera.org/learn/scala-functional-programming
@@ -63,14 +63,15 @@ All classes from the java.lang package are imported by default. In the sbt build
 
 Scala is a pure object-oriented language in the sense that everything is an object, including numbers or functions. It differs from Java in that respect, since Java distinguishes primitive types (such as boolean and int) from reference types.
 You can pass methods as arguments, store them in variables, and return them from other functions, all without special syntax (specific Scala FP functionality).
-Even though return types can be inferred in Scala, it is best practise to put explicit result types for public members of classes. For local values in methods, it is encouraged to infer result types.
+Even though return types can be inferred in Scala, it is best practise to put explicit result types for public members of classes (for the users). For local values in methods, it is encouraged to infer result types.
 
 Scala has classes and these classes can take parameters (as opposed to java classes, where you need a constructor). An instance (object) of a Scala class in created with the keyword "new".
-All classes in Scala inherit from a super-class. When no super-class is specified, scala.AnyRef is implicitly used.
+All classes in Scala inherit from a super-class. When no super-class is specified, scala.AnyRef is implicitly used. Scala has quite a big variety of types of classes. It's easy to be overwhelmed, but try to start with the generic class, the object class (can only have a single instance), the trait (similar to interfaces in other languages), and the case class (pure data class).
 
 ### Setting up a basic project (application)
 In Scala, when you are using sbt (Simple Build Tool) to build an application, you typically set up your project with a main entry point.
-1. Define the main entry point: the conventional way to specify the entry point for your application is to define an object with a main method. This object serves as the main class of your application.
+1. Define the main entry point: the conventional way to specify the entry point for your application in Scala is to define an object with a main method. This object serves as the main class of your application.
+   (such an Object class is a specific Scala class of which only one instance can exist). The main method here has to follow a particular convention (inherited from Java): they have to take a single argument of type ‘Array[String]’, and return a Unit.
    ```
    object MyApp {
       def main(args: Array[String]): Unit = {
@@ -88,6 +89,7 @@ In Scala, when you are using sbt (Simple Build Tool) to build an application, yo
 ### Some functionalities and syntax that is new to me
 - scala indentation is 2 spaces instead of 4!
 - scala defaults to call-by-value
+- recursive functions have to have a return type (enforced by the compiler). It is optional for other types of functions, though encouraged for documentation.
 - **Option** is the way in Scala to handle null. It allows to encapsulate the concept of “is this value defined” or “does this variable contain a value“. Example:
   Some() is a constructor for creating an instance of the Some class, which is a subclass of Option. Some is used to wrap a value inside an Option. It signifies that there is a value present.
 
@@ -135,6 +137,20 @@ Example of apply in normal class: Once you created an instance of a class (e.g. 
 In a companion Object, you can use the apply function to create an extra constructor so to speak, so you can create instances with a different amount of parameters.
 Example of functional code with apply used in different ways can be found in the applyMethod class.
 
+- When a function recursively calls more than one function, tail recursion is not an option!
+
+- scala Tuple: a set of variables that can be of different types. e.g. val a: (Int, String) = (12, "abc") or alternative syntax val b: (Int, String) = 12 => "abc"
+  To retrieve Tuple data: val first = a._1; val second = a._2 //(._1 is called an accessor)
+  To swap data: a.swap 
+  Whenever possible, you should use a case class rather than a Tuple. In the long run, it makes things much easier to manage and maintain.
+
+
+- collection methods
+  * .map -> performs an action on each list element
+  * .fold -> merges information from list elements, e.g. val sum: Int = flatList.fold(0)((x, y) => x + y)
+  * .reduce
+  * .filter -> returns a list with all elements that are true to a predicate
+  * 
 
 - **How to read files in Scala as streams**:
   * scala.io.Source library:  
