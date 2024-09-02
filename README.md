@@ -139,11 +139,64 @@ Example of functional code with apply used in different ways can be found in the
 
 - When a function recursively calls more than one function, tail recursion is not an option!
 
-- scala Tuple: a set of variables that can be of different types. e.g. val a: (Int, String) = (12, "abc") or alternative syntax val b: (Int, String) = 12 => "abc"
+- **scala Tuple**: a set of variables that can be of different types. e.g. val a: (Int, String) = (12, "abc") or alternative syntax val b: (Int, String) = 12 => "abc"
   To retrieve Tuple data: val first = a._1; val second = a._2 //(._1 is called an accessor)
   To swap data: a.swap 
   Whenever possible, you should use a case class rather than a Tuple. In the long run, it makes things much easier to manage and maintain.
 
+- **algebraic datatypes**: combining different types into a single new type, e.g. a case class: 
+  case class User(
+    val userid: Int,
+    val username: String,
+    val password: String
+    )
+ A case class is a **product type**, where all subtypes contain data. There is also a **sum type**, where the subtypes are mutually exclusive and exhaustive, 
+e.g. the boolean type has to be either true or false, never both. Other examples are enums or sealed traits (you define multiple classes and have to use one when making an object of the trait. This forces you to write the traits functions applicable for each subclass)
+You can also use combinations.
+
+- **Type constructors**: A type constructor in Scala (and other typed functional languages) is like a "blueprint" that creates new types from existing ones. For example, List is a type constructor. When you give it a type, like Int, it constructs a new type, List[Int].
+
+- **Functors**: A functor is a concept from category theory, applied in programming. In Scala, a functor is a type (often a type constructor) that can be mapped over. If you have a List[Int], you can apply a function to every element in the list using map, transforming it into a List[String] or List[Double], for example. The key idea is that you can apply a function to a value inside a container (like a list) without changing the structure of the container.
+  A functor is a type constructor F[_] that is map-able. We can apply a function to a value inside an F: F[T].map(f: T => U): F[U] e.g. List[Int].map(f: Int => String): List[String]
+  An abstract view of mapping would be to see the functor as a box filled with elements, you take one element (value) out of the box, apply the function to it, and then put it back in a similar box.
+  Think of “functor” as an interface: it says there needs to be a method map, without giving an implementation.
+  (A functor that is not a type constructor but just a type, would be Box[T])
+
+Examples: List, Option (and many more!)
+- **Monads**: A monad is a type of functor with additional capabilities. Specifically, it allows for the chaining of operations that produce a value inside a context (like Option, List, or Future). In Scala, monads provide flatMap, which is like map but it "flattens" the result, allowing you to chain operations in a sequence.
+  At its core, a Monad is a design pattern that represents computations as a series of steps. It’s a way to handle sequences of computations where each step depends on the result of the previous one, all within a certain context (like handling possible errors, working with asynchronous computations, etc.).
+  In Scala, a Monad is typically defined by three main components:
+  * Type Constructor (M[_]): A Monad operates on a type constructor M[_]. This is a type that takes another type as a parameter. For example, Option[_], List[_], Future[_], etc.
+  * unit or pure: This is a function that takes a value of some type A and returns it wrapped in a Monad context M[A]. In Scala, this is usually achieved with the apply method or directly via constructors (e.g., Option(3) creates Some(3)): def pure[A](a: A): M[A]
+  * flatMap: This is the key function that makes a Monad special. It allows you to take a value wrapped in a Monad, apply a function that returns a Monad, and then "flatten" the result
+  In functional programming, side effects (like I/O, state changes, etc.) are often wrapped in Monads (like IO, Future, etc.), allowing you to manage them in a controlled way.
+  “monad” is a sub-interface of “functor”. All Monads are Functors but not all Functors are Monads.
+  Use case: If you apply multiple functions on an Option[Int], you might end up with an Option[Option[Int]]. You use flatmap to straighten that out if needed. Think of Monads as datatypes where it is possible to performs such a correction (another example List[List[List[String]]])
+
+  Official definition: A monad is:
+  a type constructor M[_]
+  that implements a method: M[T].flatMap(f: T => M[U]): M[U]
+  and a function: unit(x: T): M[T] In Scala, unit is like a constructor: it gives a way of making new things of type M[T].
+
+Further reading: Category Theory, Kleisli
+
+In FP, many useful design patterns have been implemented already on many relevant types or type constructors.
+You are merely a client of the pattern.
+
+You can define your own monads, BUT
+- you’ll probably never need to;
+- the specifics differ per language;
+- if you do, you need to dive into the monad laws, and make sure that your monad satisfies the laws!
+
+Here a list of existing monads:
+- Collection types (Scala: List, Vector, Set, LazyList, …)
+- Functional error handling (Scala: Option, Either[T,_], Try)
+- IO monad (for purely functional I/O; see Haskell)
+- Asynchronous code (Scala: Future)
+- Reader/environment monad (use case: dependency injection)
+- State monad (dealing with state)
+- Writer monad (logging)
+- ...
 
 - collection methods
   * .map -> performs an action on each list element
